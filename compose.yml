@@ -1,0 +1,25 @@
+services:
+  webnote:
+    build:
+      context: .
+    image: webnote:latest  # Custom image name and version
+    ports:
+      - "80:80"
+      - "443:443"
+    volumes:
+      - ./notes:/app/notes
+      - ./certs:/app/certs:ro
+    environment:
+      - MODE=https  # options are http, https, both
+      - HTTP_PORT=80
+      - HTTPS_PORT=443
+      - SSL_KEY_PATH=/app/certs/server.key
+      - SSL_CERT_PATH=/app/certs/server.cert
+    networks:
+      xlan:
+        ipv4_address: 192.168.1.10
+
+networks:
+  xlan:
+    external: true
+
